@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // Data Tatabahasa (Standard DBP Applied)
+        // Data Tatabahasa (60 Unique Questions, Standard DBP, Local Images Exact Match)
         const questionsData = {
             am: [
                 { q: "Pihak pengurusan sedang berbincang dengan para ______ di bilik mesyuarat.", a: "pekerja", options: ["Pekerja", "pekerja", "bekerja", "pekerjaan"], img: "pekerja.jpg" },
@@ -120,7 +120,17 @@
                 { q: "Ketua kampung menyampaikan ______ kepada pemenang pertandingan itu.", a: "hadiah", options: ["Hadiah", "hadiah", "anugerah", "Anugerah"], img: "hadiah-pemenang.jpg" },
                 { q: "Ibu memasukkan sedikit ______ ke dalam kari ayam itu.", a: "garam", options: ["Garam", "garam", "gula", "Gula"], img: "garam.jpg" },
                 { q: "Kami berlindung di bawah ______ yang rendang ketika hujan lebat.", a: "pokok", options: ["pokok", "Pokok", "dahan", "Dahan"], img: "pokok-rendang.jpg" },
-                { q: "Kerajaan telah membina sebuah ______ baharu di kampung kami.", a: "jambatan", options: ["Jambatan", "jambatan", "jalan", "Jalan"], img: "jambatan.jpg" }
+                { q: "Kerajaan telah membina sebuah ______ baharu di kampung kami.", a: "jambatan", options: ["Jambatan", "jambatan", "jalan", "Jalan"], img: "jambatan.jpg" },
+                { q: "Ayah sedang membasuh ______ di halaman rumah.", a: "kereta", options: ["kereta", "Kereta", "basikal", "Basikal"], img: "kereta.jpg" },
+                { q: "Sekawan ______ sedang meragut rumput di padang.", a: "lembu", options: ["lembu", "Lembu", "kambing", "Kambing"], img: "lembu.jpg" },
+                { q: "Adik menangis kerana ______ miliknya telah hilang.", a: "mainan", options: ["mainan", "Mainan", "buku", "Buku"], img: "mainan.jpg" },
+                { q: "Ibu membeli sayur-sayuran segar di ______ tani.", a: "pasar", options: ["pasar", "Pasar", "kedai", "Kedai"], img: "pasar-tani.jpg" },
+                { q: "Kami sekeluarga berkelah di ______ pada hujung minggu.", a: "pantai", options: ["pantai", "Pantai", "taman", "Taman"], img: "pantai.jpg" },
+                { q: "Nelayan itu menebarkan ______ untuk menangkap ikan.", a: "jala", options: ["jala", "Jala", "pancing", "Pancing"], img: "jala-ikan.jpg" },
+                { q: "Abang menyimpan pakaian kotornya di dalam ______.", a: "bakul", options: ["bakul", "Bakul", "almari", "Almari"], img: "bakul-pakaian.jpg" },
+                { q: "Burung layang-layang sedang membuat ______ di bumbung rumah.", a: "sarang", options: ["sarang", "Sarang", "rumah", "Rumah"], img: "sarang-burung.jpg" },
+                { q: "Datuk duduk di atas ______ rotan sambil membaca surat khabar.", a: "kerusi", options: ["kerusi", "Kerusi", "meja", "Meja"], img: "kerusi-rotan.jpg" },
+                { q: "Pekerja itu memotong kayu tebal menggunakan ______ mesin.", a: "gergaji", options: ["gergaji", "Gergaji", "kapak", "Kapak"], img: "gergaji.jpg" }
             ],
             khas: [
                 { q: "Cikgu Aminah mengajar mata pelajaran ______ di sekolah itu.", a: "Bahasa Melayu", options: ["bahasa melayu", "Bahasa melayu", "Bahasa Melayu", "bahasa Melayu"], img: "bahasa-melayu.jpg" },
@@ -129,10 +139,20 @@
                 { q: "Kami memelihara seekor arnab yang diberi nama ______.", a: "Si Comel", options: ["si comel", "Si Comel", "Si comel", "si Comel"], img: "arnab-comel.jpg" },
                 { q: "Kereta keluaran tempatan yang pertama ialah ______.", a: "Proton Saga", options: ["proton saga", "Proton saga", "Proton Saga", "proton Saga"], img: "proton-saga.jpg" },
                 { q: "Beliau dilahirkan di ______ pada tahun 1990.", a: "Hospital Kuala Lumpur", options: ["hospital kuala lumpur", "Hospital Kuala Lumpur", "Hospital kuala lumpur", "hospital Kuala Lumpur"], img: "hospital-kl.jpg" },
-                { q: "Perdana Menteri Malaysia yang pertama ialah ______.", a: "Tunku Abdul Rahman", options: ["tunku abdul rahman", "Tunku abdul rahman", "Tunku Abdul Rahman", "tunku Abdul rahman"], img: "matawang-yen.jpg" },
+                { q: "Perdana Menteri Malaysia yang pertama ialah ______.", a: "Tunku Abdul Rahman", options: ["tunku abdul rahman", "Tunku abdul rahman", "Tunku Abdul Rahman", "tunku Abdul rahman"], img: "tunku-abdul-rahman.jpg" },
                 { q: "Bangunan tertinggi di dunia kini ialah ______.", a: "Burj Khalifa", options: ["burj khalifa", "Burj Khalifa", "Burj khalifa", "burj Khalifa"], img: "burj-khalifa.jpg" },
                 { q: "Bapa saya bekerja sebagai jurutera di syarikat ______.", a: "Petronas", options: ["petronas", "Petronas", "Syarikat petronas", "syarikat Petronas"], img: "bangunan-petronas.jpg" },
-                { q: "Kawan baik saya, ______, akan berpindah ke luar negara.", a: "Ahmad Albab", options: ["ahmad albab", "Ahmad Albab", "Ahmad albab", "ahmad Albab"], img: "kawan-ahmad.jpg" }
+                { q: "Kawan baik saya, ______, akan berpindah ke luar negara.", a: "Ahmad Albab", options: ["ahmad albab", "Ahmad Albab", "Ahmad albab", "ahmad Albab"], img: "kawan-ahmad.jpg" },
+                { q: "Adik sedang menonton rancangan kartun ______ di televisyen.", a: "Upin dan Ipin", options: ["upin dan ipin", "Upin dan Ipin", "Upin Dan Ipin", "upin Dan ipin"], img: "upin-ipin.jpg" },
+                { q: "Beliau bertugas sebagai guru di ______.", a: "Sekolah Menengah Kebangsaan Kulai", options: ["Sekolah menengah kebangsaan kulai", "Sekolah Menengah Kebangsaan Kulai", "sekolah menengah kebangsaan kulai", "sekolah Menengah Kebangsaan Kulai"], img: "smk-kulai.jpg" },
+                { q: "Setiap tahun, umat Islam menyambut ______ pada 1 Syawal.", a: "Hari Raya Aidilfitri", options: ["Hari raya aidilfitri", "Hari Raya Aidilfitri", "hari raya aidilfitri", "hari Raya Aidilfitri"], img: "hari-raya.jpg" },
+                { q: "Mata wang rasmi yang digunakan di negara Jepun ialah ______.", a: "Yen", options: ["yen", "Yen", "Ringgit", "ringgit"], img: "matawang-yen.jpg" },
+                { q: "Bapa menyimpan wang simpanannya di ______.", a: "Bank Simpanan Nasional", options: ["Bank Simpanan Nasional", "bank simpanan nasional", "Bank simpanan nasional", "bank Simpanan Nasional"], img: "bsn.jpg" },
+                { q: "Cikgu memberikan tugasan mata pelajaran ______ kepada kami.", a: "Sains", options: ["sains", "Sains", "Matematik", "matematik"], img: "buku-sains.jpg" },
+                { q: "Jabatan itu diletakkan di bawah pengawasan ______.", a: "Kementerian Kesihatan Malaysia", options: ["Kementerian Kesihatan Malaysia", "kementerian kesihatan malaysia", "Kementerian kesihatan malaysia", "kementerian Kesihatan Malaysia"], img: "kkm.jpg" },
+                { q: "Negeri yang terkenal dengan jolokan 'Harimau Selatan' ialah ______.", a: "Johor Darul Takzim", options: ["Johor Darul Takzim", "Johor darul takzim", "johor darul takzim", "johor Darul Takzim"], img: "peta-johor.jpg" },
+                { q: "Mereka mendaki ______ yang merupakan gunung tertinggi di Malaysia.", a: "Gunung Kinabalu", options: ["Gunung kinabalu", "Gunung Kinabalu", "gunung kinabalu", "gunung Kinabalu"], img: "gunung-kinabalu.jpg" },
+                { q: "Pemain bola sepak legenda negara kita ialah Allahyarham ______.", a: "Mokhtar Dahari", options: ["mokhtar dahari", "Mokhtar Dahari", "Mokhtar dahari", "mokhtar Dahari"], img: "mokhtar-dahari.jpg" }
             ],
             sendi: [
                 { q: "Perabot mewah itu diperbuat ______ kayu jati berkualiti tinggi.", a: "daripada", options: ["dari", "daripada", "pada", "kepada"], img: "perabot-jati.jpg" },
@@ -144,23 +164,19 @@
                 { q: "Tolong berikan fail dokumen ini ______ pengurus.", a: "kepada", options: ["pada", "ke", "kepada", "untuk"], img: "fail-dokumen.jpg" },
                 { q: "Lukisan yang cantik itu digantung ______ dinding ruang tamu.", a: "pada", options: ["di", "pada", "ke", "kepada"], img: "lukisan-dinding.jpg" },
                 { q: "Majlis perasmian akan diadakan ______ hari Ahad minggu hadapan.", a: "pada", options: ["di", "pada", "dalam", "ke"], img: "majlis-perasmian.jpg" },
-                { q: "Izan berasal ______ negeri Johor Darul Takzim.", a: "dari", options: ["daripada", "dari", "di", "ke"], img: "peta-johor.jpg" }
+                { q: "Izan berasal ______ negeri Johor Darul Takzim.", a: "dari", options: ["daripada", "dari", "di", "ke"], img: "papan-tanda-johor.jpg" },
+                { q: "Pasukan penyelamat menyerahkan bantuan makanan ______ mangsa banjir.", a: "kepada", options: ["kepada", "pada", "ke", "untuk"], img: "mangsa-banjir.jpg" },
+                { q: "Buku rujukan itu diletakkan ______ atas rak oleh pengawas pusat sumber.", a: "di", options: ["di", "ke", "pada", "dari"], img: "buku-meja.jpg" },
+                { q: "Ali menunggang basikal ______ sekolah pada setiap pagi.", a: "ke", options: ["ke", "di", "pada", "dari"], img: "basikal-sekolah.jpg" },
+                { q: "Pelancong yang ramah itu datang ______ negara Jepun.", a: "dari", options: ["dari", "daripada", "ke", "di"], img: "pelancong-jepun.jpg" },
+                { q: "Program gotong-royong perdana itu akan bermula ______ pukul lapan pagi.", a: "pada", options: ["di", "pada", "ke", "hingga"], img: "jam-lapan.jpg" },
+                { q: "Berita tentang kemalangan itu disiarkan ______ televisyen.", a: "di", options: ["di", "pada", "ke", "dalam"], img: "berita-tv.jpg" },
+                { q: "Pakaian seragam berwarna biru ini dikhaskan ______ pengawas sekolah.", a: "bagi", options: ["untuk", "bagi", "kepada", "pada"], img: "pakaian-seragam.jpg" },
+                { q: "Ubat batuk itu diserahkan ______ pesakit oleh jururawat yang bertugas.", a: "kepada", options: ["kepada", "daripada", "untuk", "pada"], img: "ubat-batuk.jpg" },
+                { q: "Danish sabar menunggu bas di perhentian itu ______ awal pagi tadi.", a: "sejak", options: ["sejak", "hingga", "dari", "pada"], img: "perhentian-bas.jpg" },
+                { q: "Perlawanan bola sepak itu terpaksa ditangguhkan ______ hari esok akibat hujan lebat.", a: "hingga", options: ["hingga", "pada", "ke", "sejak"], img: "bola-sepak.jpg" }
             ]
         };
-
-        // Pad to 20 questions each for Grammar
-        ['am', 'khas', 'sendi'].forEach(cat => {
-            const baseLen = questionsData[cat].length;
-            for(let i = baseLen; i < 20; i++) {
-                let baseQ = questionsData[cat][i % baseLen]; 
-                questionsData[cat].push({
-                    q: `[Latihan Lanjutan] ${baseQ.q}`,
-                    a: baseQ.a,
-                    options: [...baseQ.options].sort(() => Math.random() - 0.5),
-                    img: baseQ.img
-                });
-            }
-        });
 
         const pemahamanRawData = [
             {
@@ -292,9 +308,6 @@
         function updateNextBtnUI() {
             const btnNext = document.getElementById('btn-next');
             if (!btnNext) return;
-            
-            const currentAns = userAnswers[currentQKey] || '';
-            const hasAnswer = currentAns.trim().length > 0;
 
             if (isSubmitted) {
                 btnNext.disabled = false;
@@ -306,7 +319,7 @@
                 btnNext.disabled = true;
                 btnNext.innerHTML = `Tunggu (${cooldownLeft}s) <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
             } else {
-                btnNext.disabled = !hasAnswer; 
+                btnNext.disabled = false; 
                 btnNext.innerHTML = `Seterusnya <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
             }
         }
@@ -337,7 +350,6 @@
                 badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700";
                 badge.innerText = "Selesai";
             } else if (savedAns.trim() !== '') {
-                // If the answer exists and we are rendering, it means it's correct (because we gate them)
                 badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700";
                 badge.innerText = "Tepat & Disimpan";
             } else {
@@ -361,7 +373,6 @@
             }
 
             // Gating Input
-            // If they already answered correctly previously, lock the input to prevent accidental changes
             let inputDisabled = isSubmitted || savedAns !== ''; 
             let inputClass = "answer-input w-full p-4 border-2 rounded-xl text-lg font-medium transition-all outline-none ";
             
@@ -383,7 +394,6 @@
                         autocomplete="off"
                         ${inputDisabled ? 'disabled' : ''}>
                     
-                    <!-- Live Feedback Box for Errors (Hidden by default) -->
                     <div id="live-feedback" class="hidden mt-4 p-4 rounded-xl text-sm md:text-base border items-center gap-3 shadow-sm"></div>
                 </div>
             `;
@@ -421,7 +431,6 @@
                 }, 100);
                 startCooldown();
             } else {
-                // If it's locked/answered, just let them click next immediately
                 clearInterval(cooldownInterval);
                 cooldownLeft = 0;
                 updateNextBtnUI();
@@ -429,13 +438,10 @@
         }
 
         window.handleLiveTyping = function(val) {
-            // Only update local UI, do not save to userAnswers yet!
-            // We only save to userAnswers if it passes the validation check.
             const badge = document.getElementById('status-badge');
             const inputEl = document.getElementById('answer-input');
             const feedbackEl = document.getElementById('live-feedback');
             
-            // Remove error state when they start fixing their mistake
             inputEl.classList.remove('pulse-red', 'bg-red-50', 'border-red-500', 'text-red-800', 'shake');
             inputEl.classList.add('border-slate-300', 'text-slate-800');
             feedbackEl.classList.add('hidden');
@@ -444,18 +450,9 @@
             if (val.trim() !== '') {
                 badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-blue-100 text-blue-700";
                 badge.innerText = "Menaip...";
-                
-                // Allow Next button to be clickable if cooldown is done
-                const btnNext = document.getElementById('btn-next');
-                if(cooldownLeft <= 0 && btnNext) {
-                    btnNext.disabled = false;
-                }
             } else {
                 badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-700";
                 badge.innerText = "Belum Dijawab";
-                
-                const btnNext = document.getElementById('btn-next');
-                if(btnNext) btnNext.disabled = true;
             }
         };
 
@@ -466,10 +463,8 @@
             }
         };
 
-        // NEW: Strict Gating Logic
         window.validateAndNextPage = function() {
             if (isSubmitted) {
-                // If fully completed, just navigate
                 const totalItems = getTabLength();
                 if (currentQIndex < totalItems - 1) {
                     currentQIndex++;
@@ -481,17 +476,34 @@
             const inputEl = document.getElementById('answer-input');
             const currentAnsInput = inputEl ? inputEl.value : '';
             
-            // If they already successfully answered this, just move to next page
             if (userAnswers[currentQKey] && inputEl.disabled) {
                 moveToNextPageStrict();
                 return;
             }
 
-            if (currentAnsInput.trim() === '') {
-                return; // Prevent action if empty
+            const feedbackEl = document.getElementById('live-feedback');
+            const badge = document.getElementById('status-badge');
+
+            function triggerError(msg) {
+                inputEl.classList.remove('border-slate-300', 'text-slate-800');
+                inputEl.classList.add('border-red-500', 'bg-red-50', 'text-red-800', 'pulse-red');
+                
+                inputEl.classList.remove('shake');
+                void inputEl.offsetWidth; 
+                inputEl.classList.add('shake');
+
+                feedbackEl.innerHTML = `<span class="text-xl">❌</span> <div class="text-sm text-red-800">${msg}</div>`;
+                feedbackEl.className = "mt-4 p-4 rounded-xl text-sm md:text-base border items-center gap-3 shadow-sm flex bg-red-50 border-red-200";
+
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-red-100 text-red-700";
+                badge.innerText = "Sila Baiki";
             }
 
-            // Retrieve Correct Answer
+            if (currentAnsInput.trim() === '') {
+                triggerError("<b>Kotak kosong!</b> Sila taip jawapan anda dahulu.");
+                return;
+            }
+
             let currentItem;
             if (currentTab === 'pemahaman') {
                 currentItem = flatPemahaman[currentQIndex];
@@ -502,35 +514,14 @@
             const isCorrect = checkAnswerLogic(currentTab, currentAnsInput, currentItem.a);
 
             if (!isCorrect) {
-                // STRICT GATING: Trigger Error UI & Block Navigation
-                const feedbackEl = document.getElementById('live-feedback');
-                const badge = document.getElementById('status-badge');
-
-                // Add animations and red styles
-                inputEl.classList.remove('border-slate-300', 'text-slate-800');
-                inputEl.classList.add('border-red-500', 'bg-red-50', 'text-red-800', 'pulse-red');
-                
-                // Trigger shake animation by re-adding class
-                inputEl.classList.remove('shake');
-                void inputEl.offsetWidth; // trigger reflow
-                inputEl.classList.add('shake');
-
                 let errorMsg = "<b>Salah!</b> Sila cuba lagi. Semak ejaan anda.";
                 if (currentTab === 'khas' && currentAnsInput.toLowerCase() === currentItem.a.toLowerCase()) {
                     errorMsg = "<b>Ejaan betul, tetapi Kata Nama Khas mesti huruf besar!</b> Sila baiki.";
                 }
-
-                feedbackEl.innerHTML = `<span class="text-xl">❌</span> <div class="text-sm text-red-800">${errorMsg}</div>`;
-                feedbackEl.className = "mt-4 p-4 rounded-xl text-sm md:text-base border items-center gap-3 shadow-sm flex bg-red-50 border-red-200";
-
-                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-red-100 text-red-700";
-                badge.innerText = "Jawapan Salah";
-                
-                // DO NOT proceed to next page!
+                triggerError(errorMsg);
                 return; 
             }
 
-            // If CORRECT: Save answer, update global score, and proceed
             userAnswers[currentQKey] = currentAnsInput.trim();
             updateGlobalScoreTracker();
             moveToNextPageStrict();
@@ -542,12 +533,11 @@
                 currentQIndex++;
                 renderContent();
             } else {
-                // Reached end of tab
                 const totalCompleted = Object.keys(userAnswers).length;
                 if(totalCompleted < 70) {
                     alert("Syabas! Anda telah melengkapkan tab ini. Sila beralih ke tab seterusnya di bahagian atas untuk melengkapkan baki soalan.");
                 } else {
-                    checkAllAnswers(); // Auto check if all 70 done
+                    checkAllAnswers();
                 }
             }
         }
@@ -557,9 +547,9 @@
             if (uAns === "") return false;
 
             if (tab === 'khas') {
-                return uAns === correctAnswer; // strict case
+                return uAns === correctAnswer; 
             } else {
-                return uAns.toLowerCase() === correctAnswer.toLowerCase(); // lenient
+                return uAns.toLowerCase() === correctAnswer.toLowerCase(); 
             }
         }
 
@@ -577,7 +567,6 @@
                 return;
             }
 
-            // MASTERY ACHIEVED (100% since they can't proceed if wrong)
             isSubmitted = true;
             clearInterval(cooldownInterval);
             
