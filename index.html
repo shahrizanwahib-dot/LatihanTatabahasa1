@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Latihan Komprehensif IGCSE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-b-4 border-indigo-600 text-indigo-700 bg-indigo-50 font-bold; }
+        .tab-inactive { text-slate-500 hover:bg-slate-50; }
+        .card-image { width: 100%; height: 220px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem; background-color: #e2e8f0; }
+        .passage-box { background-color: #fdfde8; border-left: 4px solid #eab308; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Custom Input Styling */
+        .answer-input:focus:not(:disabled) { box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); }
+        .pulse-red { animation: pulseRed 2s infinite; }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen pb-12">
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header & Global Stats -->
+        <header class="text-center mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Modul Penilaian Kendiri (Mod Gating Keras)</h1>
+            <p class="text-slate-500 text-sm sm:text-base">Bahagian A: Tatabahasa | Bahagian B: Pemahaman</p>
+            <div class="mt-4 flex justify-center gap-4 items-center">
+                <span id="scoreDisplay" class="bg-slate-100 text-slate-700 px-5 py-2 rounded-full font-bold text-sm sm:text-base border border-slate-300">Soalan Diselesaikan: 0 / 70</span>
+            </div>
+            <div class="mt-4 bg-amber-50 text-amber-800 text-xs sm:text-sm p-4 rounded-lg border border-amber-200 text-left shadow-inner">
+                <strong>💡 Arahan Penting:</strong> 
+                <ul class="list-disc ml-5 mt-1 space-y-1">
+                    <li>Taip semula jawapan yang tepat ke dalam kotak.</li>
+                    <li>Sistem <strong>dikunci</strong>. Anda TIDAK BOLEH bergerak ke soalan seterusnya jika jawapan anda salah!</li>
+                    <li>Sila tekan butang <strong>Enter</strong> atau klik 'Seterusnya' untuk menyemak jawapan secara langsung.</li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="flex flex-wrap bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 mb-6">
+            <button onclick="switchTab('am')" id="tab-am" class="flex-1 py-3 px-2 text-sm sm:text-base transition tab-active">Kata Nama Am</button>
+            <button onclick="switchTab('khas')" id="tab-khas" class="flex-1 py-3 px-2 text-sm sm:text-base transition tab-inactive">Kata Nama Khas</button>
+            <button onclick="switchTab('sendi')" id="tab-sendi" class="flex-1 py-3 px-2 text-sm sm:text-base transition tab-inactive">Kata Sendi Nama</button>
+            <button onclick="switchTab('pemahaman')" id="tab-pemahaman" class="flex-1 py-3 px-2 text-sm sm:text-base transition tab-inactive border-l border-slate-200">Pemahaman</button>
+        </div>
+
+        <!-- Single Question Container -->
+        <div id="quiz-wrapper" class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden fade-in">
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-100 h-2">
+                <div id="progress-bar" class="bg-indigo-500 h-2 transition-all duration-300" style="width: 5%"></div>
+            </div>
+            
+            <div class="p-6 sm:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="question-tracker" class="bg-indigo-100 text-indigo-800 text-sm font-bold px-4 py-1.5 rounded-full">Soalan 1 / 20</span>
+                    <span id="status-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-700">Belum Dijawab</span>
+                </div>
+
+                <!-- Dynamic Content Area -->
+                <div id="question-content" class="min-h-[300px]">
+                    <!-- Injected by JS -->
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="mt-8 flex justify-between items-center border-t border-slate-100 pt-6">
+                    <button onclick="prevPage()" id="btn-prev" class="px-5 py-2.5 rounded-xl font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        Sebelumnya
+                    </button>
+                    
+                    <button onclick="validateAndNextPage()" id="btn-next" class="px-5 py-2.5 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2">
+                        Seterusnya
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Footer Actions -->
+        <div class="mt-8 flex flex-col sm:flex-row justify-between items-center bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700 gap-4">
+            <div class="text-slate-300 text-sm font-medium text-center sm:text-left">
+                Selesaikan semua 70 soalan. <br class="hidden sm:block"/> Anda hanya boleh menghantar jika skor penuh.
+            </div>
+            <div class="flex gap-4 w-full sm:w-auto">
+                <button onclick="checkAllAnswers()" id="submit-btn" class="flex-1 sm:flex-none bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-400 transition transform hover:-translate-y-1 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    Hantar & Selesai
+                </button>
+            </div>
+        </div>
+
+        <!-- CFU Section (TLAC) -->
+        <div class="mt-8 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl shadow-sm">
+            <h3 class="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Refleksi Kendiri (Exit Ticket)
+            </h3>
+            <div class="space-y-2">
+                <p class="text-sm text-blue-800"><strong>Penulisan (Writing):</strong> Selepas anda berjaya menyelesaikan semua modul, pilih satu daripada topik petikan pemahaman tadi (Rutin Harian, Percutian, atau Cadangan Aktiviti). Tulis satu perenggan pendek (4-5 ayat) tentang pengalaman anda sendiri berkaitan topik tersebut dan serahkan kepada guru.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Tatabahasa (Standard DBP Applied)
+        const questionsData = {
+            am: [
+                { q: "Pihak pengurusan sedang berbincang dengan para ______ di bilik mesyuarat.", a: "pekerja", options: ["Pekerja", "pekerja", "bekerja", "pekerjaan"], img: "pekerja.jpg" },
+                { q: "Kemalangan itu berpunca daripada kerosakan ______ pada lori tersebut.", a: "brek", options: ["Brek", "brek", "berik", "bereks"], img: "brek-lori.jpg" },
+                { q: "Pesakit itu sedang berehat di ______ hospital.", a: "wad", options: ["Wad", "wad", "bilik", "Bilik"], img: "wad-hospital.jpg" },
+                { q: "Pak Abu menebas semak-samun menggunakan sebilah ______ yang tajam.", a: "parang", options: ["parang", "Parang", "pisau", "Pisau"], img: "parang.jpg" },
+                { q: "Pemandangan pada waktu ______ di pantai ini sangat menakjubkan.", a: "senja", options: ["Senja", "senja", "malam", "Malam"], img: "waktu-senja.jpg" },
+                { q: "Para ______ dinasihatkan supaya mematuhi peraturan sekolah.", a: "pelajar", options: ["pelajar", "Pelajar", "belajar", "pelajaran"], img: "pelajar-sekolah.jpg" },
+                { q: "Ketua kampung menyampaikan ______ kepada pemenang pertandingan itu.", a: "hadiah", options: ["Hadiah", "hadiah", "anugerah", "Anugerah"], img: "hadiah-pemenang.jpg" },
+                { q: "Ibu memasukkan sedikit ______ ke dalam kari ayam itu.", a: "garam", options: ["Garam", "garam", "gula", "Gula"], img: "garam.jpg" },
+                { q: "Kami berlindung di bawah ______ yang rendang ketika hujan lebat.", a: "pokok", options: ["pokok", "Pokok", "dahan", "Dahan"], img: "pokok-rendang.jpg" },
+                { q: "Kerajaan telah membina sebuah ______ baharu di kampung kami.", a: "jambatan", options: ["Jambatan", "jambatan", "jalan", "Jalan"], img: "jambatan.jpg" }
+            ],
+            khas: [
+                { q: "Cikgu Aminah mengajar mata pelajaran ______ di sekolah itu.", a: "Bahasa Melayu", options: ["bahasa melayu", "Bahasa melayu", "Bahasa Melayu", "bahasa Melayu"], img: "bahasa-melayu.jpg" },
+                { q: "Novel yang bertajuk ______ itu sangat menarik untuk dibaca.", a: "Tenggelamnya Kapal Van Der Wijck", options: ["Tenggelamnya Kapal Van der wijck", "tenggelamnya kapal van der wijck", "Tenggelamnya Kapal Van Der Wijck", "Tenggelamnya kapal Van Der Wijck"], img: "buku-kapal.jpg" },
+                { q: "Pelancong dari luar negara gemar berkunjung ke ______.", a: "Pulau Langkawi", options: ["pulau langkawi", "Pulau Langkawi", "Pulau langkawi", "pulau Langkawi"], img: "pulau-langkawi.jpg" },
+                { q: "Kami memelihara seekor arnab yang diberi nama ______.", a: "Si Comel", options: ["si comel", "Si Comel", "Si comel", "si Comel"], img: "arnab-comel.jpg" },
+                { q: "Kereta keluaran tempatan yang pertama ialah ______.", a: "Proton Saga", options: ["proton saga", "Proton saga", "Proton Saga", "proton Saga"], img: "proton-saga.jpg" },
+                { q: "Beliau dilahirkan di ______ pada tahun 1990.", a: "Hospital Kuala Lumpur", options: ["hospital kuala lumpur", "Hospital Kuala Lumpur", "Hospital kuala lumpur", "hospital Kuala Lumpur"], img: "hospital-kl.jpg" },
+                { q: "Perdana Menteri Malaysia yang pertama ialah ______.", a: "Tunku Abdul Rahman", options: ["tunku abdul rahman", "Tunku abdul rahman", "Tunku Abdul Rahman", "tunku Abdul rahman"], img: "matawang-yen.jpg" },
+                { q: "Bangunan tertinggi di dunia kini ialah ______.", a: "Burj Khalifa", options: ["burj khalifa", "Burj Khalifa", "Burj khalifa", "burj Khalifa"], img: "burj-khalifa.jpg" },
+                { q: "Bapa saya bekerja sebagai jurutera di syarikat ______.", a: "Petronas", options: ["petronas", "Petronas", "Syarikat petronas", "syarikat Petronas"], img: "bangunan-petronas.jpg" },
+                { q: "Kawan baik saya, ______, akan berpindah ke luar negara.", a: "Ahmad Albab", options: ["ahmad albab", "Ahmad Albab", "Ahmad albab", "ahmad Albab"], img: "kawan-ahmad.jpg" }
+            ],
+            sendi: [
+                { q: "Perabot mewah itu diperbuat ______ kayu jati berkualiti tinggi.", a: "daripada", options: ["dari", "daripada", "pada", "kepada"], img: "perabot-jati.jpg" },
+                { q: "Kucing itu melompat ______ atas meja lalu menjatuhkan pasu bunga.", a: "ke", options: ["ke", "di", "dari", "pada"], img: "kucing-lompat.jpg" },
+                { q: "Surat tawaran itu diterima ______ Kementerian Pendidikan Malaysia.", a: "daripada", options: ["dari", "daripada", "kepada", "pada"], img: "surat-tawaran.jpg" },
+                { q: "Angin kencang bertiup ______ arah selatan sejak semalam.", a: "dari", options: ["daripada", "dari", "ke", "pada"], img: "angin-kencang.jpg" },
+                { q: "Tiket penerbangan ______ Jepun telah habis dijual.", a: "ke", options: ["di", "pada", "ke", "kepada"], img: "tiket-jepun.jpg" },
+                { q: "Rantai emas ini adalah hadiah istimewa ______ ibu saya.", a: "untuk", options: ["untuk", "pada", "kepada", "daripada"], img: "rantai-emas.jpg" },
+                { q: "Tolong berikan fail dokumen ini ______ pengurus.", a: "kepada", options: ["pada", "ke", "kepada", "untuk"], img: "fail-dokumen.jpg" },
+                { q: "Lukisan yang cantik itu digantung ______ dinding ruang tamu.", a: "pada", options: ["di", "pada", "ke", "kepada"], img: "lukisan-dinding.jpg" },
+                { q: "Majlis perasmian akan diadakan ______ hari Ahad minggu hadapan.", a: "pada", options: ["di", "pada", "dalam", "ke"], img: "majlis-perasmian.jpg" },
+                { q: "Izan berasal ______ negeri Johor Darul Takzim.", a: "dari", options: ["daripada", "dari", "di", "ke"], img: "peta-johor.jpg" }
+            ]
+        };
+
+        // Pad to 20 questions each for Grammar
+        ['am', 'khas', 'sendi'].forEach(cat => {
+            const baseLen = questionsData[cat].length;
+            for(let i = baseLen; i < 20; i++) {
+                let baseQ = questionsData[cat][i % baseLen]; 
+                questionsData[cat].push({
+                    q: `[Latihan Lanjutan] ${baseQ.q}`,
+                    a: baseQ.a,
+                    options: [...baseQ.options].sort(() => Math.random() - 0.5),
+                    img: baseQ.img
+                });
+            }
+        });
+
+        const pemahamanRawData = [
+            {
+                title: "Petikan 1: Rutin Harian (Asas)",
+                text: "Nama saya Danish. Saya bangun pada pukul 6.00 pagi setiap hari. Selepas mandi dan bersarapan, saya akan mengayuh basikal ke sekolah yang terletak kira-kira dua kilometer dari rumah. Saya sangat suka akan mata pelajaran Sains kerana saya bercita-cita untuk menjadi seorang doktor apabila dewasa kelak. Pada waktu petang, saya bermain bola sepak di padang bersama-sama dengan kawan-kawan.",
+                questions: [
+                    { q: "Pukul berapakah Danish bangun tidur setiap hari?", a: "6.00 pagi", options: ["6.00 pagi", "7.00 pagi", "6.30 pagi", "8.00 pagi"] },
+                    { q: "Bagaimanakah Danish pergi ke sekolah?", a: "Mengayuh basikal", options: ["Menaiki bas", "Mengayuh basikal", "Berjalan kaki", "Dihantar oleh bapa"] },
+                    { q: "Apakah cita-cita Danish?", a: "Doktor", options: ["Saintis", "Pemain bola sepak", "Doktor", "Guru"] }
+                ]
+            },
+            {
+                title: "Petikan 2: Cuti di Langkawi (Pertengahan)",
+                text: "Cuti sekolah yang lalu, saya dan keluarga telah bercuti di Pulau Langkawi selama tiga hari dua malam. Kami menaiki kapal terbang dari Lapangan Terbang Antarabangsa Kuala Lumpur (KLIA). Pengalaman menaiki kereta kabel (Langkawi SkyCab) sangat mendebarkan kerana terletak di tempat yang sangat tinggi. Pemandangan laut amat menakjubkan. Kami juga membeli coklat yang murah di kedai bebas cukai.",
+                questions: [
+                    { q: "Berapa lamakah penulis dan keluarganya bercuti di Pulau Langkawi?", a: "Tiga hari dua malam", options: ["Dua hari satu malam", "Tiga hari dua malam", "Empat hari tiga malam", "Seminggu"] },
+                    { q: "Mengapakah pengalaman menaiki kereta kabel dianggap mendebarkan?", a: "Terletak di tempat yang sangat tinggi", options: ["Harga tiket mahal", "Terletak di tempat yang sangat tinggi", "Kabel sering rosak", "Ramai pengunjung"] },
+                    { q: "Apakah barangan yang dibeli oleh mereka di sana?", a: "Coklat", options: ["Cenderamata", "Pakaian", "Coklat", "Kereta"] },
+                    { q: "Dari manakah mereka menaiki kapal terbang?", a: "KLIA", options: ["KLIA", "Langkawi", "Pulau Pinang", "Senai"] }
+                ]
+            },
+            {
+                title: "Petikan 3: E-mel Cadangan (Lanjutan)",
+                text: "Kepada: persatuan.bahasa@sekolah.edu.my<br>Daripada: ahmad.firdaus@murid.edu.my<br>Perkara: Cadangan Aktiviti Bulan Bahasa<br><br>Salam sejahtera Saudara Pengerusi,<br><br>Saya mewakili murid Tingkatan Tiga mencadangkan program Bulan Bahasa. Kami berpendapat bahawa pertandingan ejaan pintar amat sesuai untuk mengukuhkan kosa kata murid. Selain itu, lawatan ke Dewan Bahasa dan Pustaka (DBP) pastinya dapat menyuntik semangat kecintaan terhadap bahasa ibunda. Harap dipertimbangkan.",
+                questions: [
+                    { q: "Siapakah yang menghantar e-mel ini?", a: "Ahmad Firdaus", options: ["Pengerusi Kelab", "Ahmad Firdaus", "Guru Bahasa Melayu", "Dewan Bahasa dan Pustaka"] },
+                    { q: "Apakah tujuan utama e-mel ini ditulis?", a: "Memberi cadangan aktiviti", options: ["Membuat aduan", "Memberi cadangan aktiviti", "Minta sumbangan", "Mengkritik Pengerusi"] },
+                    { q: "Perkataan 'menyuntik' dalam petikan bermaksud...", a: "Membangkitkan", options: ["Membangkitkan", "Merawat pesakit", "Mematikan", "Mengurangkan"] }
+                ]
+            }
+        ];
+
+        // Flatten Pemahaman Data
+        let flatPemahaman = [];
+        pemahamanRawData.forEach((p, pIdx) => {
+            p.questions.forEach((q, qIdx) => {
+                flatPemahaman.push({
+                    passageTitle: p.title,
+                    passageText: p.text,
+                    q: q.q,
+                    a: q.a,
+                    options: q.options,
+                    globalIdx: flatPemahaman.length,
+                    pIndex: pIdx,
+                    qIndex: qIdx
+                });
+            });
+        });
+
+        let currentTab = 'am';
+        let currentQIndex = 0;
+        let userAnswers = {};
+        let isSubmitted = false;
+        let currentQKey = '';
+        
+        let cooldownLeft = 3;
+        let cooldownInterval = null;
+
+        // Keyboard Navigation Listener
+        document.addEventListener('keydown', function(e) {
+            const btnNext = document.getElementById('btn-next');
+            const btnPrev = document.getElementById('btn-prev');
+            
+            if (e.key === 'Enter') {
+                if (btnNext && !btnNext.disabled) {
+                    validateAndNextPage();
+                }
+            }
+            
+            const activeElement = document.activeElement;
+            const isTyping = activeElement && (activeElement.tagName.toLowerCase() === 'input' || activeElement.tagName.toLowerCase() === 'textarea');
+            
+            if (!isTyping) {
+                if (e.key === 'ArrowRight') {
+                    if (btnNext && !btnNext.disabled) {
+                        validateAndNextPage();
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    if (btnPrev && !btnPrev.disabled) {
+                        prevPage();
+                    }
+                }
+            }
+        });
+
+        function switchTab(tab) {
+            currentTab = tab;
+            currentQIndex = 0;
+            
+            document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('tab-active', 'border-b-4', 'border-indigo-600', 'text-indigo-700', 'bg-indigo-50', 'font-bold');
+                btn.classList.add('tab-inactive');
+            });
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.remove('tab-inactive');
+            activeBtn.classList.add('tab-active');
+
+            const wrapper = document.getElementById('quiz-wrapper');
+            wrapper.classList.remove('fade-in');
+            void wrapper.offsetWidth;
+            wrapper.classList.add('fade-in');
+            
+            renderContent();
+        }
+
+        function getTabLength() {
+            return currentTab === 'pemahaman' ? flatPemahaman.length : questionsData[currentTab].length;
+        }
+
+        function startCooldown() {
+            if(isSubmitted) {
+                updateNextBtnUI();
+                return; 
+            }
+            
+            clearInterval(cooldownInterval);
+            cooldownLeft = 3;
+            updateNextBtnUI();
+
+            cooldownInterval = setInterval(() => {
+                cooldownLeft--;
+                updateNextBtnUI();
+                if (cooldownLeft <= 0) {
+                    clearInterval(cooldownInterval);
+                }
+            }, 1000);
+        }
+
+        function updateNextBtnUI() {
+            const btnNext = document.getElementById('btn-next');
+            if (!btnNext) return;
+            
+            const currentAns = userAnswers[currentQKey] || '';
+            const hasAnswer = currentAns.trim().length > 0;
+
+            if (isSubmitted) {
+                btnNext.disabled = false;
+                btnNext.innerHTML = `Seterusnya <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+                return;
+            }
+
+            if (cooldownLeft > 0) {
+                btnNext.disabled = true;
+                btnNext.innerHTML = `Tunggu (${cooldownLeft}s) <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+            } else {
+                btnNext.disabled = !hasAnswer; 
+                btnNext.innerHTML = `Seterusnya <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+            }
+        }
+
+        function renderContent() {
+            const container = document.getElementById('question-content');
+            const totalItems = getTabLength();
+            
+            const progress = ((currentQIndex + 1) / totalItems) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('question-tracker').innerText = `Soalan ${currentQIndex + 1} / ${totalItems}`;
+
+            let currentItem;
+
+            if (currentTab === 'pemahaman') {
+                currentItem = flatPemahaman[currentQIndex];
+                currentQKey = `pemahaman-${currentItem.pIndex}-${currentItem.qIndex}`;
+            } else {
+                currentItem = questionsData[currentTab][currentQIndex];
+                currentQKey = `${currentTab}-${currentQIndex}`;
+            }
+
+            const savedAns = userAnswers[currentQKey] || '';
+            
+            // Status Badge
+            const badge = document.getElementById('status-badge');
+            if (isSubmitted) {
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700";
+                badge.innerText = "Selesai";
+            } else if (savedAns.trim() !== '') {
+                // If the answer exists and we are rendering, it means it's correct (because we gate them)
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700";
+                badge.innerText = "Tepat & Disimpan";
+            } else {
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-700";
+                badge.innerText = "Belum Dijawab";
+            }
+
+            // Options Badge Display
+            let optionsHTML = '';
+            if (currentItem.options && currentItem.options.length > 0) {
+                const badgeItems = currentItem.options.map(opt => 
+                    `<span class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-semibold tracking-wide shadow-sm inline-block">${opt}</span>`
+                ).join(' ');
+                
+                optionsHTML = `
+                    <div class="mt-4 mb-2 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Pilihan Jawapan:</span>
+                        <div class="flex flex-wrap gap-2">${badgeItems}</div>
+                    </div>
+                `;
+            }
+
+            // Gating Input
+            // If they already answered correctly previously, lock the input to prevent accidental changes
+            let inputDisabled = isSubmitted || savedAns !== ''; 
+            let inputClass = "answer-input w-full p-4 border-2 rounded-xl text-lg font-medium transition-all outline-none ";
+            
+            if (inputDisabled) {
+                inputClass += "border-emerald-500 bg-emerald-50 text-emerald-800";
+            } else {
+                inputClass += "border-slate-300 text-slate-800 focus:border-indigo-400";
+            }
+
+            let inputHTML = `
+                ${optionsHTML}
+                <div class="mt-4 relative">
+                    <label for="answer-input" class="block text-sm font-medium text-slate-700 mb-2">Taip jawapan anda di sini:</label>
+                    <input type="text" id="answer-input" 
+                        class="${inputClass}" 
+                        placeholder="Taip di sini..." 
+                        value="${savedAns}"
+                        oninput="handleLiveTyping(this.value)"
+                        autocomplete="off"
+                        ${inputDisabled ? 'disabled' : ''}>
+                    
+                    <!-- Live Feedback Box for Errors (Hidden by default) -->
+                    <div id="live-feedback" class="hidden mt-4 p-4 rounded-xl text-sm md:text-base border items-center gap-3 shadow-sm"></div>
+                </div>
+            `;
+
+            // Render Views
+            if (currentTab === 'pemahaman') {
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="passage-box p-6 rounded-xl shadow-inner max-h-[400px] overflow-y-auto">
+                            <h2 class="text-lg font-bold mb-3 text-indigo-900">${currentItem.passageTitle}</h2>
+                            <p class="leading-relaxed text-slate-700 text-justify text-sm sm:text-base">${currentItem.passageText}</p>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <p class="font-bold text-slate-800 mb-2 text-xl leading-snug">${currentItem.q}</p>
+                            ${inputHTML}
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <img src="${currentItem.img}" alt="Visual" class="card-image shadow-sm" onerror="this.src='https://via.placeholder.com/600x300?text=Gambar+Hilang'">
+                    <p class="font-bold text-slate-800 mb-2 text-xl sm:text-2xl leading-snug text-center px-4">${currentItem.q}</p>
+                    <div class="max-w-2xl mx-auto w-full">
+                        ${inputHTML}
+                    </div>
+                `;
+            }
+
+            document.getElementById('btn-prev').disabled = currentQIndex === 0;
+            
+            if(!inputDisabled) {
+                setTimeout(() => {
+                    const inputEl = document.getElementById('answer-input');
+                    if(inputEl) inputEl.focus();
+                }, 100);
+                startCooldown();
+            } else {
+                // If it's locked/answered, just let them click next immediately
+                clearInterval(cooldownInterval);
+                cooldownLeft = 0;
+                updateNextBtnUI();
+            }
+        }
+
+        window.handleLiveTyping = function(val) {
+            // Only update local UI, do not save to userAnswers yet!
+            // We only save to userAnswers if it passes the validation check.
+            const badge = document.getElementById('status-badge');
+            const inputEl = document.getElementById('answer-input');
+            const feedbackEl = document.getElementById('live-feedback');
+            
+            // Remove error state when they start fixing their mistake
+            inputEl.classList.remove('pulse-red', 'bg-red-50', 'border-red-500', 'text-red-800', 'shake');
+            inputEl.classList.add('border-slate-300', 'text-slate-800');
+            feedbackEl.classList.add('hidden');
+            feedbackEl.classList.remove('flex');
+
+            if (val.trim() !== '') {
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-blue-100 text-blue-700";
+                badge.innerText = "Menaip...";
+                
+                // Allow Next button to be clickable if cooldown is done
+                const btnNext = document.getElementById('btn-next');
+                if(cooldownLeft <= 0 && btnNext) {
+                    btnNext.disabled = false;
+                }
+            } else {
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-700";
+                badge.innerText = "Belum Dijawab";
+                
+                const btnNext = document.getElementById('btn-next');
+                if(btnNext) btnNext.disabled = true;
+            }
+        };
+
+        window.prevPage = function() {
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                renderContent();
+            }
+        };
+
+        // NEW: Strict Gating Logic
+        window.validateAndNextPage = function() {
+            if (isSubmitted) {
+                // If fully completed, just navigate
+                const totalItems = getTabLength();
+                if (currentQIndex < totalItems - 1) {
+                    currentQIndex++;
+                    renderContent();
+                }
+                return;
+            }
+
+            const inputEl = document.getElementById('answer-input');
+            const currentAnsInput = inputEl ? inputEl.value : '';
+            
+            // If they already successfully answered this, just move to next page
+            if (userAnswers[currentQKey] && inputEl.disabled) {
+                moveToNextPageStrict();
+                return;
+            }
+
+            if (currentAnsInput.trim() === '') {
+                return; // Prevent action if empty
+            }
+
+            // Retrieve Correct Answer
+            let currentItem;
+            if (currentTab === 'pemahaman') {
+                currentItem = flatPemahaman[currentQIndex];
+            } else {
+                currentItem = questionsData[currentTab][currentQIndex];
+            }
+
+            const isCorrect = checkAnswerLogic(currentTab, currentAnsInput, currentItem.a);
+
+            if (!isCorrect) {
+                // STRICT GATING: Trigger Error UI & Block Navigation
+                const feedbackEl = document.getElementById('live-feedback');
+                const badge = document.getElementById('status-badge');
+
+                // Add animations and red styles
+                inputEl.classList.remove('border-slate-300', 'text-slate-800');
+                inputEl.classList.add('border-red-500', 'bg-red-50', 'text-red-800', 'pulse-red');
+                
+                // Trigger shake animation by re-adding class
+                inputEl.classList.remove('shake');
+                void inputEl.offsetWidth; // trigger reflow
+                inputEl.classList.add('shake');
+
+                let errorMsg = "<b>Salah!</b> Sila cuba lagi. Semak ejaan anda.";
+                if (currentTab === 'khas' && currentAnsInput.toLowerCase() === currentItem.a.toLowerCase()) {
+                    errorMsg = "<b>Ejaan betul, tetapi Kata Nama Khas mesti huruf besar!</b> Sila baiki.";
+                }
+
+                feedbackEl.innerHTML = `<span class="text-xl">❌</span> <div class="text-sm text-red-800">${errorMsg}</div>`;
+                feedbackEl.className = "mt-4 p-4 rounded-xl text-sm md:text-base border items-center gap-3 shadow-sm flex bg-red-50 border-red-200";
+
+                badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-red-100 text-red-700";
+                badge.innerText = "Jawapan Salah";
+                
+                // DO NOT proceed to next page!
+                return; 
+            }
+
+            // If CORRECT: Save answer, update global score, and proceed
+            userAnswers[currentQKey] = currentAnsInput.trim();
+            updateGlobalScoreTracker();
+            moveToNextPageStrict();
+        };
+
+        function moveToNextPageStrict() {
+            const totalItems = getTabLength();
+            if (currentQIndex < totalItems - 1) {
+                currentQIndex++;
+                renderContent();
+            } else {
+                // Reached end of tab
+                const totalCompleted = Object.keys(userAnswers).length;
+                if(totalCompleted < 70) {
+                    alert("Syabas! Anda telah melengkapkan tab ini. Sila beralih ke tab seterusnya di bahagian atas untuk melengkapkan baki soalan.");
+                } else {
+                    checkAllAnswers(); // Auto check if all 70 done
+                }
+            }
+        }
+
+        function checkAnswerLogic(tab, userAnswer, correctAnswer) {
+            const uAns = userAnswer ? userAnswer.trim() : "";
+            if (uAns === "") return false;
+
+            if (tab === 'khas') {
+                return uAns === correctAnswer; // strict case
+            } else {
+                return uAns.toLowerCase() === correctAnswer.toLowerCase(); // lenient
+            }
+        }
+
+        function updateGlobalScoreTracker() {
+            const totalScore = Object.keys(userAnswers).length;
+            document.getElementById('scoreDisplay').innerText = `Soalan Diselesaikan: ${totalScore} / 70`;
+        }
+
+        function checkAllAnswers() {
+            const totalScore = Object.keys(userAnswers).length;
+            const totalQuestions = 70;
+            
+            if (totalScore < totalQuestions) {
+                alert(`Anda baru melengkapkan ${totalScore}/70 soalan. Sila semak tab lain untuk pastikan semua soalan telah dijawab dengan tepat.`);
+                return;
+            }
+
+            // MASTERY ACHIEVED (100% since they can't proceed if wrong)
+            isSubmitted = true;
+            clearInterval(cooldownInterval);
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerText = "Selesai (Lengkap Sempurna)";
+            submitBtn.classList.replace('bg-emerald-500', 'bg-indigo-600');
+            submitBtn.classList.replace('hover:bg-emerald-400', 'hover:bg-indigo-700');
+            submitBtn.disabled = true;
+
+            renderContent();
+            showSuccessModal(totalScore, totalQuestions);
+        }
+
+        function showSuccessModal(score, total) {
+            const modal = document.createElement('div');
+            modal.className = "fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center p-4 z-50 backdrop-blur-sm";
+            modal.innerHTML = `
+                <div class="bg-white p-8 sm:p-10 rounded-3xl max-w-md w-full text-center shadow-2xl fade-in border-4 border-emerald-500">
+                    <div class="text-6xl mb-4 animate-bounce">🏆</div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Tahniah!</h2>
+                    <p class="text-slate-500 mb-6 font-medium">Anda telah berjaya melepasi semua ujian ketat.</p>
+                    <div class="bg-indigo-50 rounded-2xl p-6 mb-8 border border-indigo-100">
+                        <p class="text-sm text-indigo-500 font-semibold uppercase tracking-wider mb-2">Skor Sempurna</p>
+                        <p class="text-6xl font-black text-indigo-700">${score} <span class="text-2xl text-indigo-400">/ ${total}</span></p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="bg-emerald-600 text-white w-full py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 transition shadow-lg">Lihat Tugasan Penulisan</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Initialize First Render
+        renderContent();
+    </script>
+</body>
+</html>
